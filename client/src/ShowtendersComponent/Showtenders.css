@@ -1,0 +1,25 @@
+#main
+{
+  height: 100%;
+  width: 70%;
+  background-color: cadetblue;
+  text-align: center;
+}
+
+#categorymain
+{
+  height: 450px;
+  width: 600px;
+}
+
+.categorypart
+{
+  height: 150px;
+  width: 190px;
+  float: left;
+}
+
+.categorypart img
+{
+  border: 2px solid black ;
+}
