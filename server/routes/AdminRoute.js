@@ -25,6 +25,8 @@ router.get("/viewprofile/:_id", adminController.viewProfile );
 
 router.post("/launchtender", adminController.addTender );
 
+router.get("/managetenderstatus/:status/:_id", adminController.manageTenderStatus );
+
 router.post("/addcategory", adminController.addCategory );
 
 router.post("/addsubcategory", adminController.addSubCategory );
@@ -44,5 +46,8 @@ router.get("/fetchcategory", adminController.fetchcategory );
 
 //fetch sub category list
 router.get("/fetchsubcategory", adminController.fetchsubcategory );
+
+//fetch tender info
+router.get("/fetchtenderinfo", adminController.fetchTenderAppliedInfo );
 
 export default router;

@@ -11,7 +11,7 @@ function Verifyuser()
     axios.get(_webapi+"verifyuser?email="+params.email).then((result)=>{
       console.log("Verification Succeed");
     })
-  },[]);
+  },[params.email]);
   
   return(
   <div id='verifyuser'>

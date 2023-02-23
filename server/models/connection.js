@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const url = "mongodb://localhost:27017/myTendersApp2_ReactJS";
+const url = "mongodb://127.0.0.1:27017/Tenders2ReactApp";
 
 mongoose.connect(url);
 

@@ -31,6 +31,11 @@ const TenderSchema = mongoose.Schema({
     required: [true,"End Date is required"],
     trim: true
   },
+  tenamount: {
+    type: String,
+    required: [true,"Amount is required"],
+    trim: true
+  },
   info: String
 });
 

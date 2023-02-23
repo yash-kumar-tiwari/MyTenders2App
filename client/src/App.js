@@ -24,6 +24,7 @@ import Viewprofile from './ViewprofileComponent/Viewprofile';
 import Addcategory from './AddCategoryComponent/Addcategory';
 import Addsubcategory from './AddSubCategoryComponent/Addsubcategory';
 import Launchtender from './LaunchtenderComponent/Launchtender';
+import Showappliedtenders from './ShowappliedtendersComponent/Showappliedtenders';
 
 //import User Components
 import Userhome from './UserhomeComponent/Userhome';
@@ -77,10 +78,11 @@ function App() {
         <Route path="/logout" element={<Nav />} ></Route>
         <Route path="/admin" element={<Nav />} ></Route>
         <Route path="/admin/manageusers" element={<Nav />} ></Route>
-        <Route path="/admin/viewprofile" element={<Viewprofile />} ></Route>
+        <Route path="/admin/viewprofile/:_id" element={<Nav />} ></Route>
         <Route path="/admin/addcategory" element={<Nav />} ></Route>
         <Route path="/admin/addsubcategory" element={<Nav />} ></Route>
         <Route path="/admin/launchtender" element={<Nav />} ></Route>
+        <Route path="/admin/showappliedtenders" element={<Nav />} ></Route>
         <Route path="/admin/epadmin" element={<Nav />} ></Route>
         <Route path="/admin/cpadmin" element={<Nav />} ></Route>
         <Route path="/user/epuser" element={<Nav />} ></Route>
@@ -108,6 +110,7 @@ function App() {
         <Route path="/admin/addcategory" element={<Addcategory />} ></Route>
         <Route path="/admin/addsubcategory" element={<Addsubcategory />} ></Route>
         <Route path="/admin/launchtender" element={<Launchtender />} ></Route>
+        <Route path="/admin/showappliedtenders" element={<Showappliedtenders />} ></Route>
         <Route path="/admin/epadmin" element={<Editprofile />} ></Route>
         <Route path="/admin/cpadmin" element={<Changepassword />} ></Route>
         <Route path="/user/epuser" element={<Editprofile />} ></Route>

@@ -15,7 +15,6 @@ const router = express.Router();
 //     next();
 // });
 
-
 router.get("/searchtenders", userController.fetchcategory );
 
 router.get("/showsubcategory/:catnm", userController.fetchsubcategory );

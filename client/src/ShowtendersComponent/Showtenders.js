@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable no-unused-vars */
 import './Showtenders.css'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -16,7 +18,7 @@ function Showtenders()
       console.log(result.data.tenDetails);
       setTenderDetails(result.data.tenDetails);
     });  
-  }, []);
+  }, [params.subcatnm]);
 
   const applyTender = (_id)=>{
 
@@ -34,26 +36,26 @@ function Showtenders()
   
     <div>
     {/* Page Header Start */}
-    <div class="container-fluid bg-primary py-3 bg-header" style={{"margin-bottom": "90px"}}>
-            <div class="row py-3">
-                <div class="col-12 pt-lg-5 mt-lg-5 text-center">
-                    <h1 class="display-4 text-white animated zoomIn">User Home</h1>
-                    <a href="" class="h5 text-white">User Home</a>
-                    <i class="far fa-circle text-white px-2"></i>
-                    <a href="" class="h5 text-white">Show Tenders</a>
+    <div className="container-fluid bg-primary py-3 bg-header" style={{"margin-bottom": "90px"}}>
+            <div className="row py-3">
+                <div className="col-12 pt-lg-5 mt-lg-5 text-center">
+                    <h1 className="display-4 text-white animated zoomIn">User Home</h1>
+                    <a className="h5 text-white">User Home</a>
+                    <i className="far fa-circle text-white px-2"></i>
+                    <a className="h5 text-white">Show Tenders</a>
                 </div>
             </div>
     </div>
 {/* Page Header Start */}
 
-<div class="container-fluid py-2 wow fadeInUp">
-    <div class="container py-2">
-          <div class="text-center">
-        <h1 class="text-primary font-weight-semi-bold text-uppercase mb-3">Search Sub Category >> {params.subcatnm}</h1>
+<div className="container-fluid py-2 wow fadeInUp">
+    <div className="container py-2">
+    <div className="table-responsive-md text-center">
+        <h1 className="text-primary font-weight-semi-bold text-uppercase mb-3">Search Sub Category {">>"} {params.subcatnm}</h1>
         <br/>
         <center>
         <table className='table table-hover'>
-          <tr className='table table-bordered table-info'>
+          <tr className='table table-info'>
             <th>ID</th>
             <th>Title</th>
             <th>Category</th>
@@ -64,25 +66,27 @@ function Showtenders()
             <th>Action</th>
           </tr>
           {
-              tenderDetails.map((row)=>(
-                <tr>
-                  <td>{row._id}</td>
-                  <td>{row.title}</td>
-                  <td>{row.subcatnm}</td>
-                  <td>{row.tenderdesc}</td>
-                  <td>{row.tenderdocnm}</td>
-                  <td>{row.enddate}</td>
-                  <td>{row.info}</td>
-                  <td>
-                  <a onClick={()=>{applyTender(row._id)}}>
-                    <button type="button" class="btn btn-info btn-sm">Apply Tender</button>
-                  </a>
-                  </td>
-                </tr>
-              ))
-            }
+    tenderDetails.map((row)=>(
+      <tr>
+        <td>{row._id}</td>
+        <td>{row.title}</td>
+        <td>{row.subcatnm}</td>
+        <td>{row.tenderdesc}</td>
+        <td>{<Link to='../../public/assets/uploads/tenderdocs/'></Link>}
+            
+        </td>
+        <td>{row.enddate}</td>
+        <td>{row.info}</td>
+        <td>
+        <a onClick={()=>{applyTender(row._id)}}>
+          <button type="button" className="btn btn-info btn-sm">Apply Tender</button>
+        </a>
+        </td>
+      </tr>
+    ))
+  }
         </table>
-        </center>    
+        </center>   
       </div>
       </div>
     </div>

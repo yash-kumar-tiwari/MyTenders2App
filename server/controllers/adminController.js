@@ -7,20 +7,10 @@ import RegisterSchemaModel from '../models/userModel.js';
 import CategorySchemaModel from '../models/categoryModel.js';
 import SubCategorySchemaModel from '../models/subCategoryModel.js';
 import TenderSchemaModel from '../models/tenderModel.js';
+import TenderInfoSchemaModel from '../models/tenderInfoModel.js';
 
 //static files path
 const __dirname = url.fileURLToPath(new URL ('.', import.meta.url));
-
-// export var fetchUsers = async (condition_obj)
-//     {
-//         return new Promise ((resolve,reject)=>{
-//             indexModel.fetchUsers(condition_obj).then((result)=>{
-//                 resolve(result);
-//             }).catch((err)=>{
-//                 reject(err);
-//             });
-//         });
-//     }
 
 export var manageUser = async (req, res, next)=>{
     var condition_obj = {"role":"user"}
@@ -30,11 +20,11 @@ export var manageUser = async (req, res, next)=>{
 
     if(userList.length != 0 )
     {        
-        return res.json({"userDetails":userList}); 
+        return res.status(200).json({"userDetails":userList}); 
     }
     else
     {
-        return res.json({"userDetails":"error"});
+        return res.status(500).json({"userDetails":"error"});
     }
 }
 
@@ -47,27 +37,27 @@ export var manageUserStatus = async (req, res, next)=>{
         //to update status in collection
         var result = await RegisterSchemaModel.updateMany({"_id":parseInt(statusDetails._id)},{$set:{"status":0}});
         if(result)
-            return res.json({"response":true});
+            return res.status(200).json({"response":true});
         else
-            return res.json({"response":true});
+            return res.status(500).json({"response":true});
     }
     else if(statusDetails.status=="verify")
     {
         //to update status in collection
         var result = await RegisterSchemaModel.updateMany({"_id":parseInt(statusDetails._id)},{$set:{"status":1}});
         if(result)
-            return res.json({"response":true})
+            return res.status(200).json({"response":true})
         else
-            return res.json({"response":true})
+            return res.status(500).json({"response":true})
     }
     else
     {
         //to remove record from collection
         var result = await RegisterSchemaModel.remove({"_id":parseInt(statusDetails._id)});
         if(result)
-            return res.json({"response":true})
+            return res.status(200).json({"response":true})
         else  
-            return res.json({"response":true})
+            return res.status(500).json({"response":true})
     }
 }
 
@@ -87,9 +77,9 @@ export var addCategory = async (req, res, next)=>{
     // console.log(catDetails);
     var result = await CategorySchemaModel.create(catDetails);
     if(result)
-        res.json({"output":"Add Category Successfully"});
+        res.status(200).json({"output":"Add Category Successfully"});
     else
-        res.json({"output":"Category Uploading Failed"});   
+        res.status(500).json({"output":"Category Uploading Failed"});   
 }
       
 export var addSubCategory = async (req, res, next)=>{
@@ -109,26 +99,41 @@ export var addSubCategory = async (req, res, next)=>{
     console.log(subCatDetails);
     var result = await SubCategorySchemaModel.create(subCatDetails);
     if(result)
-        res.json({"output":"Add Sub Category Successfully"});
+        res.status(200).json({"output":"Add Sub Category Successfully"});
     else
-        res.json({"output":"Sub Category Uploading Failed"});   
+        res.status(500).json({"output":"Sub Category Uploading Failed"});   
+}
+
+export var fetchTenderAppliedInfo = async (req, res, next)=>{
+    var condition_obj = req.params.tenid;
+    console.log(condition_obj);
+    
+    var tenderAppliedList = await TenderInfoSchemaModel.find();
+
+    if(tenderAppliedList.length!= 0 )
+        return res.status(200).json({"tenderAppliedDetails":tenderAppliedList});
+    else
+        return res.status(500).json({"tenderAppliedDetails":"error"});
 }
 
 export var fetchcategory = async (req, res, next)=>{
-    var catList = await CategorySchemaModel.find();
+    var condition_obj = req.params;
+    var catList = await CategorySchemaModel.find(condition_obj);
     if(catList.length!= 0 )
-        return res.json({"catList":catList});
+        return res.status(200).json({"catList":catList});
     else
-        return res.json({"catList":"error"});
+        return res.status(500).json({"catList":"error"});
 }
 
 export var fetchsubcategory = async (req, res, next)=>{
-    var subCatList = await SubCategorySchemaModel.find();
+    var condition_obj = req.params;
+    var subCatList = await SubCategorySchemaModel.find(condition_obj);
     if(subCatList.length!= 0 )
-        return res.json({"subCatList":subCatList});
+        return res.status(200).json({"subCatList":subCatList});
     else
-        return res.json({"subCatList":"error"});
+        return res.status(500).json({"subCatList":"error"});
 }
+
 export var addTender = async (req, res, next)=>{
 
     // console.log(req.body);
@@ -139,7 +144,7 @@ export var addTender = async (req, res, next)=>{
     // console.log(tenderdoc);
     var filename = Date.now()+"-"+tenderdoc.name;
     // console.log(catnm+"------>"+filename);
-    console.log(filename);
+    // console.log(filename);
 
     var filepath = path.join(__dirname, "../../client/public/assets/uploads/tenderdocs",filename);
 
@@ -152,10 +157,43 @@ export var addTender = async (req, res, next)=>{
     console.log(tenDetails);
     var result = await TenderSchemaModel.create(tenDetails);
     if(result)
-        res.json({"output":"Tender Added Successfully"});
+        res.status(200).json({"output":"Tender Added Successfully"});
     else
-        res.json({"output":"Tender Uploading Failed"});
+        res.status(500).json({"output":"Tender Uploading Failed"});
 
+}
+
+export var manageTenderStatus = async (req, res, next)=>{
+    var statusDetails = req.params;
+    console.log(statusDetails);
+    
+    if(statusDetails.status=="unallocate")
+    {
+        //to update status in collection
+        var result = await TenderInfoSchemaModel.updateMany({"_id":parseInt(statusDetails._id)},{$set:{"status":0}});
+        if(result)
+            return res.status(200).json({"response":true});
+        else
+            return res.status(500).json({"response":true});
+    }
+    else if(statusDetails.status=="allocate")
+    {
+        //to update status in collection
+        var result = await TenderInfoSchemaModel.updateMany({"_id":parseInt(statusDetails._id)},{$set:{"status":1}});
+        if(result)
+            return res.status(200).json({"response":true})
+        else
+            return res.status(500).json({"response":true})
+    }
+    else
+    {
+        //to remove record from collection
+        var result = await TenderInfoSchemaModel.remove({"_id":parseInt(statusDetails._id)});
+        if(result)
+            return res.status(200).json({"response":true})
+        else  
+            return res.status(500).json({"response":true})
+    }
 }
 
 export var fetchProfile = async (req, res, next)=>{
@@ -166,11 +204,11 @@ export var fetchProfile = async (req, res, next)=>{
     
     if(result)
     {        
-        res.json({"output":"","userDetail":result});
+        res.status(200).json({"output":"","userDetail":result});
     }
     else
     {
-        res.json({"output":"","userDetail":"error"});
+        res.status(500).json({"output":"","userDetail":"error"});
     }
 }
 
@@ -182,11 +220,11 @@ export var viewProfile = async (req, res, next)=>{
     
     if(result)
     {        
-        res.json({"output":"","userDetails":result});
+        res.status(200).json({"output":"","userDetails":result});
     }
     else
     {
-        res.json({"output":"","userDetails":"error"});
+        res.status(500).json({"output":"","userDetails":"error"});
     }
 }
 
@@ -200,9 +238,9 @@ export var updateProfile = async (req, res, next)=>{
     var result = await RegisterSchemaModel.updateMany(condData,updData);
 
     if(result)
-        return res.json({"output":"Details Successfully Updated","userDetail":result});
+        return res.status(200).json({"output":"Details Successfully Updated","userDetail":result});
     else
-        return res.json({"output":"Error While Updating Details","userDetail":"error"});
+        return res.status(500).json({"output":"Error While Updating Details","userDetail":"error"});
 }
 
 export var updatePassword = async (req, res, next)=>{
@@ -224,13 +262,13 @@ export var updatePassword = async (req, res, next)=>{
                 var result =await RegisterSchemaModel.updateMany(condData,updData);
 
                 if(result)
-                    return res.json({"output":"Update Password Successfully","userDetails":result});
+                    return res.status(200).json({"output":"Update Password Successfully","userDetails":result});
                 else
-                    return res.json({"output":"Update Password Failed","userDetails":"error"});
+                    return res.status(500).json({"output":"Update Password Failed","userDetails":"error"});
             }
             else
-            res.json({"output":"New Password & Old Password Mismatch"});
+            res.status(500).json({"output":"New Password & Old Password Mismatch"});
         }
         else
-        res.json({"output":"Invalid Old Password"});
+        res.status(500).json({"output":"Invalid Old Password"});
 }

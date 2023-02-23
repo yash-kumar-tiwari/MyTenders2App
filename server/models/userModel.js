@@ -45,6 +45,7 @@ const RegisterSchema = mongoose.Schema({
     type: String,
     required: [true,"Gender is required"],
   },
+  otp : String,
   role: String,
   status: Number,
   info: String

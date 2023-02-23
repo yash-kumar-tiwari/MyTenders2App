@@ -14,31 +14,37 @@ const __dirname = url.fileURLToPath(new URL ('.', import.meta.url));
 
 export var applyTenderInfo = async (req, res, next)=>{
 
-    var tenderInfo = req.body;
-    console.log(tenderInfo);
+    var condition_obj = {"name": req.body.name, "email": req.body.email, "title":req.body.title };
+    // console.log(condition_obj);
+
+    var chkRecord = await TenderInfoSchemaModel.find(condition_obj);
+    console.log(chkRecord);
+
+        var tenderInfo = req.body;
+        console.log(tenderInfo);
     
+        var tenderInfoList = await TenderInfoSchemaModel.find();
+        var len = tenderInfoList.length;
+        var _id = (len==0)?1:tenderInfoList[len-1]._id+1;
+        tenderInfo = {...tenderInfo, "_id": _id, "status":0 ,"info": Date()};
+        var result = await TenderInfoSchemaModel.create(tenderInfo);
 
-    var tenList = await TenderInfoSchemaModel.find();
-    var len = tenList.length;
-    var _id = (len==0)?1:tenList[len-1]._id+1;
-    tenderInfo = {...tenderInfo, "_id": _id, "info": Date()};
-    var result = await TenderInfoSchemaModel.create(tenderInfo);
+        if(result.length!= 0 )
+            return res.status(200).json({"tenderInfoList":result});
+        else
+            return res.status(500).json({"tenderInfoList":"error"});   
 
-    if(result.length!= 0 )
-        return res.json({"tenDetails":result});
-    else
-        return res.json({"tenDetails":"error"});
 }
 
 export var fetchTenders = async (req, res, next)=>{
     var condition_obj = req.params;
     console.log(condition_obj);
     
-    var tenList = await TenderSchemaModel.find();
+    var tenList = await TenderSchemaModel.find(condition_obj);
     if(tenList.length!= 0 )
-        return res.json({"tenDetails":tenList});
+        return res.status(200).json({"tenDetails":tenList});
     else
-        return res.json({"tenDetails":"error"});
+        return res.status(500).json({"tenDetails":"error"});
 }
 
 export var fetchTenderInfo = async (req, res, next)=>{
@@ -48,28 +54,28 @@ export var fetchTenderInfo = async (req, res, next)=>{
     var tenList = await TenderSchemaModel.find({"_id":condition_obj});
 
     if(tenList.length!= 0 )
-        return res.json({"tenDetails":tenList});
+        return res.status(200).json({"tenderDetails":tenList});
     else
-        return res.json({"tenDetails":"error"});
+        return res.status(500).json({"tenderDetails":"error"});
 }
 
 export var fetchcategory = async (req, res, next)=>{
-    var condition_obj = {};
-    var catList = await CategorySchemaModel.find();
+    var condition_obj = req.params;
+    var catList = await CategorySchemaModel.find(condition_obj);
     if(catList.length!= 0 )
-        return res.json({"catList":catList});
+        return res.status(200).json({"catList":catList});
     else
-        return res.json({"catList":"error"});
+        return res.status(500).json({"catList":"error"});
 }
 
 export var fetchsubcategory = async (req, res, next)=>{
     var condition_obj = req.params;
     // console.log(condition_obj);
-    var subCatList = await SubCategorySchemaModel.find();
+    var subCatList = await SubCategorySchemaModel.find(condition_obj);
     if(subCatList.length!= 0 )
-        return res.json({"subCatList":subCatList});
+        return res.status(200).json({"subCatList":subCatList});
     else
-        return res.json({"subCatList":"error"});
+        return res.status(500).json({"subCatList":"error"});
 }
 
 export var fetchProfile = async (req, res, next)=>{
@@ -80,11 +86,11 @@ export var fetchProfile = async (req, res, next)=>{
     
     if(result)
     {        
-        res.json({"output":"","userDetail":result});
+        res.status(200).json({"output":"","userDetail":result});
     }
     else
     {
-        res.json({"output":"","userDetail":"error"});
+        res.status(500).json({"output":"","userDetail":"error"});
     }
 }
 
@@ -96,11 +102,11 @@ export var fetchInfo = async (req, res, next)=>{
     
     if(result)
     {        
-        res.json({"output":"","userDetail":result});
+        res.status(200).json({"output":"","userDetail":result});
     }
     else
     {
-        res.json({"output":"","userDetail":"error"});
+        res.status(500).json({"output":"","userDetail":"error"});
     }
 }
 
@@ -114,9 +120,9 @@ export var updateProfile = async (req, res, next)=>{
     var result = await RegisterSchemaModel.updateMany(condData,updData);
 
     if(result)
-        return res.json({"output":"Details Successfully Updated","userDetail":result});
+        return res.status(200).json({"output":"Details Successfully Updated","userDetail":result});
     else
-        return res.json({"output":"Error While Updating Details","userDetail":"error"});
+        return res.status(500).json({"output":"Error While Updating Details","userDetail":"error"});
 }
 
 export var updatePassword = async (req, res, next)=>{
@@ -138,13 +144,13 @@ export var updatePassword = async (req, res, next)=>{
                 var result =await RegisterSchemaModel.updateMany(condData,updData);
 
                 if(result)
-                    return res.json({"output":"Update Password Successfully","userDetails":result});
+                    return res.status(200).json({"output":"Update Password Successfully","userDetails":result});
                 else
-                    return res.json({"output":"Update Password Failed","userDetails":"error"});
+                    return res.status(500).json({"output":"Update Password Failed","userDetails":"error"});
             }
             else
-            res.json({"output":"New Password & Old Password Mismatch"});
+            res.status(500).json({"output":"New Password & Old Password Mismatch"});
         }
         else
-        res.json({"output":"Invalid Old Password"});
+        res.status(500).json({"output":"Invalid Old Password"});
 }

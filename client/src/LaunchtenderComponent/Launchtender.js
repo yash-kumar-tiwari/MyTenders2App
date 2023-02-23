@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable no-unused-vars */
 import './Launchtender.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -10,6 +12,7 @@ function Launchtender()
     const [ title , setTitle ] = useState();
     const [ catName , setCatName ] = useState();
     const [ tenDesc , setTenDesc ] = useState();
+    const [ tenAmount , setTenAmount ] = useState();
     const [ file , setFile ] = useState();
     const [ endDate , setEndDate ] = useState();
     const [ catDetails, setCatDetails ] = useState([]);
@@ -33,6 +36,7 @@ function Launchtender()
         formData.append('title', title);
         formData.append('subcatnm', catName);
         formData.append('tenderdesc', tenDesc);
+        formData.append('tenamount', tenAmount);
         formData.append('tenderdoc',file);
         formData.append('enddate', endDate);
         const config = {'content-type':'multipart/form-data'};
@@ -41,7 +45,8 @@ function Launchtender()
             setTitle("");
             setCatName("");
             setTenDesc("");
-            setFile("");
+            setTenAmount("");
+            setFile[0]("");
             setEndDate("");
         }).catch((error)=>{
             console.log(error);
@@ -52,13 +57,13 @@ function Launchtender()
   
     <div>
         {/* Page Header Start */}
-<div class="container-fluid bg-primary py-3 bg-header" style={{"margin-bottom": "90px"}}>
-<div class="row py-3">
-    <div class="col-12 pt-lg-5 mt-lg-5 text-center">
-        <h1 class="display-4 text-white animated zoomIn">Launch Tender</h1>
-        <a href="" class="h5 text-white">Admin Home</a>
-        <i class="far fa-circle text-white px-2"></i>
-        <a href="" class="h5 text-white">Launch Tender</a>
+<div className="container-fluid bg-primary py-3 bg-header" style={{"margin-bottom": "90px"}}>
+<div className="row py-3">
+    <div className="col-12 pt-lg-5 mt-lg-5 text-center">
+        <h1 className="display-4 text-white animated zoomIn">Launch Tender</h1>
+        <a className="h5 text-white">Admin Home</a>
+        <i className="far fa-circle text-white px-2"></i>
+        <a className="h5 text-white">Launch Tender</a>
     </div>
 </div>
 </div>
@@ -67,30 +72,30 @@ function Launchtender()
 
 
 {/* About Start */}
-<div class="container-fluid py-2 wow fadeInUp">
-    <div class="container py-2">
-    <div class="container">
-        <div class="row">
-            {/* <div class="col-lg-5">
+<div className="container-fluid py-2 wow fadeInUp">
+    <div className="container py-2">
+    <div className="container">
+        <div className="row">
+            {/* <div className="col-lg-5">
                 <div
-                    class="d-flex flex-column align-items-center justify-content-center bg-about rounded h-100 py-5 px-3">
-                    <i class="fa fa-5x fa-award text-primary mb-4"></i>
-                    <h1 class="display-2 text-white mb-2" data-toggle="counter-up">25</h1>
-                    <h2 class="text-white m-0">Years Experience</h2>
+                    className="d-flex flex-column align-items-center justify-content-center bg-about rounded h-100 py-5 px-3">
+                    <i className="fa fa-5x fa-award text-primary mb-4"></i>
+                    <h1 className="display-2 text-white mb-2" data-toggle="counter-up">25</h1>
+                    <h2 className="text-white m-0">Years Experience</h2>
                 </div>
             </div> */}
-            <div class="col-lg-12 pt-5 pb-lg-5">
-                <h1 class="text-primary font-weight-semi-bold text-uppercase mb-3">Launch Tender Page</h1>
+            <div className="col-lg-12 pt-5 pb-lg-5">
+                <h1 className="text-primary font-weight-semi-bold text-uppercase mb-3">Launch Tender Page</h1>
                 <h2>Launch Tender Here!!!</h2>
                 <font style={{"color":"Green"}}>{output}</font>
                 <form onSubmit={handleSubmit}>
-                    <div class="form-group">
+                    <div className="form-group">
                         <label for="title">Title:</label>
-                        <input type="text" class="form-control" name="title" value={title} onChange={element=>setTitle(element.target.value)} />
+                        <input type="text" className="form-control" name="title" value={title} onChange={element=>setTitle(element.target.value)} />
                     </div>
-                    <div class="form-group">
+                    <div className="form-group">
                         <label for="category">Category:</label>
-                        <select class="form-control" value={catName} onChange={element=>setCatName(element.target.value)}>
+                        <select className="form-control" value={catName} onChange={element=>setCatName(element.target.value)}>
                           <option>Select Category</option>
                           {
                             catDetails.map((row)=>(
@@ -101,21 +106,25 @@ function Launchtender()
                           }
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div className="form-group">
                         <label for="description">Tender Description:</label>
-                        <input type="text" class="form-control" name="tenderdesc" value={tenDesc} onChange={element=>setTenDesc(element.target.value)} />
+                        <input type="text" className="form-control" name="tenderdesc" value={tenDesc} onChange={element=>setTenDesc(element.target.value)} />
                     </div>
-                    <div class="form-group">
+                    <div className="form-group">
+                        <label for="amount">Tender Amount:</label>
+                        <input type="text" className="form-control" name="tenamount" value={tenAmount} onChange={element=>setTenAmount(element.target.value)} />
+                    </div>
+                    <div className="form-group">
                         <label for="tenderdoc">Tender Document:</label>
-                        <input type="file" class="form-control" onChange={handleChange} />
+                        <input type="file" className="form-control" onChange={handleChange} />
                     </div>
-                    <div class="form-group">
+                    <div className="form-group">
                         <label for="enddate">End Date:</label>
-                        <input type="date" class="form-control" name="enddate" value={endDate} onChange={element=>setEndDate(element.target.value)} />
+                        <input type="date" className="form-control" name="enddate" value={endDate} onChange={element=>setEndDate(element.target.value)} />
                     </div>
                     
                     
-                    <button type="submit" class="btn btn-success">Add Tender</button>
+                    <button type="submit" className="btn btn-success">Add Tender</button>
                 </form>
 
             </div>
